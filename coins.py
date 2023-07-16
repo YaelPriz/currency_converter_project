@@ -17,8 +17,8 @@ class Coins:
             rates = data['rates']
             return rates[self.conversion_to]
         except Exception:
-            print('Could not get rate from API using default rate')
+            print('Could not get rate from API. using default rate')
             return self.default_rate
 
     def calculate(self, user_input):
-            return user_input * self.get_value()
+        return user_input * self.get_value()
