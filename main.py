@@ -1,12 +1,11 @@
 # This program converts currency between USD (United States Dollars) and ILS (Israeli Shekel).
 
-import requests
 from ILS import ILS
 from USD import USD
 
 
 def get_user_value():
-    # gets user value.
+    # user value should be 1 or 2.
     # if the user chose an invalid choice:
     # lets them know it's invalid and asks them to choose again
     # repeats until the user's choice is valid
@@ -24,32 +23,10 @@ def get_user_value():
     return coin
 
 
-def convert(coin):
-    # gets user value (float).
-    # if the user inserted an invalid value:
-    # lets them know it's invalid and asks them to insert again
-    # repeats until the user's value is
-    # then calculate the conversion and saves it to list
-    i = 1
-    while i == 1:
-        try:
-            value_to_convert = float(input('please enter an amount to convert\n'))
-            i = 0
-        except ValueError:
-            print('Invalid Value, please try again\n')
-    conversion = coin.calculate(value_to_convert)
-    save_results(conversion, coin)
-
-
 def save_results(conversion, coin):
     Result.append(conversion)
-    if coin.base_currency == "USD":
-        Result.append('USD to ILS')
-    elif coin.base_currency == "ILS":
-        Result.append('ILS to USD')
-    print(conversion)
-
-
+    Result.append(coin.base_currency + " to " + coin.conversion_to)
+    print(f"The conversion result is: {conversion}")
 
 
 def start_over():
@@ -77,12 +54,12 @@ def main():
     i = 1
     while i == 1:
         coin = get_user_value()
-        convert(coin)
+        conversion = coin.calculate()
+        save_results(conversion, coin)
         i = start_over()
-        print(Result[len(Result)])
 
     print('Thanks for using our currency converter')
-    print_results
+    print_results()
 
 
 Result = []
