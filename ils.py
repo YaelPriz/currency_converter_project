@@ -1,20 +1,19 @@
 import requests
 
 
-class USD:
-    base_currency = "USD"
-    conversion_to = "ILS"
-    default_rate = 3.52
+class ILS:
+    base_currency = "ILS"
+    convert_to = "USD"
+    default_rate = 0.28
 
     def get_value(self):
-        exchangerates_url = 'https://api.engxchaerate-api.com/v4/latest'
-        api_key = '298a6cfe9f41e386201b17c1'
-        url = f'{exchangerates_url}?access_key={api_key}&base={self.base_currency}'
+        # returns the exchange rate it gets from a REST API. If the API is not available, it returns the default rate
+        host_url = 'https://api.frankfurter.app/latest'
+        url = f'{host_url}?from={self.base_currency}&to={self.convert_to}'
         try:
             response = requests.get(url)
-            data = response.json()
-            rates = data['rates']
-            return rates[self.conversion_to]
+            rate = response.json()['rates']
+            return rate[self.convert_to]
         except Exception:
             print(f"Could not get rate from API. using default rate - {self.default_rate}")
             return self.default_rate
@@ -34,3 +33,4 @@ class USD:
                 print('Invalid Value, please try again\n')
         conversion = value_to_convert * self.get_value()
         return conversion
+

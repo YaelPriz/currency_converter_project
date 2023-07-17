@@ -1,7 +1,14 @@
 # This program converts currency between USD (United States Dollars) and ILS (Israeli Shekel).
 
-from ILS import ILS
-from USD import USD
+import os
+import platform
+import subprocess
+from ils import ILS
+from usd import USD
+from result import Result
+
+results = []
+file_name = 'results.txt'
 
 
 def get_user_value():
@@ -24,12 +31,19 @@ def get_user_value():
 
 
 def save_results(conversion, coin):
-    Result.append(conversion)
-    Result.append(coin.base_currency + " to " + coin.conversion_to)
+    # saves the result as a Result class in the results list
+    result = Result(conversion, coin.base_currency + " to " + coin.convert_to)
+    results.append(result)
     print(f"The conversion result is: {conversion}")
 
 
 def start_over():
+    # gets user value about start over
+    # user value should be Y or N (case-insensitive).
+    # return 1 if start over was chosen and 0 if it was chosen not to start over
+    # if the user chose an invalid choice:
+    # lets them know it's invalid and asks them to choose again
+    # repeats until the user's choice is valid
     i = 1
     while i == 1:
         user_input = input('Do you want to start over? Please choose Y / N\n')
@@ -43,10 +57,37 @@ def start_over():
             print('Invalid Choice, please try again\n')
 
 
-def print_results():
-    # prints each result in a new line
-    for i in range(0, len(Result), 2):
-        print(Result[i], Result[i+1])
+def print_and_save():
+    # Gets the project directory
+    # Creates the file path by joining the project directory and the filename
+    # using a for loop to write to the file and print each result in a new line
+
+    current_file_path = os.path.abspath(__file__)
+    project_directory = os.path.dirname(current_file_path)
+    file_path = os.path.join(project_directory, file_name)
+
+    try:
+        with open(file_path, 'w') as file:
+            for result in results:
+                file.write(f"result: {result.result}, conversion flow: {result.conversion_flow}\n")
+                print(result.result, result.conversion_flow)
+    except IOError as e:
+        print(f"Error writing to the file: {str(e)}")
+
+    return file_path
+
+
+def open_file(file_path):
+    # opens the results file (using the correct function for each operating system)
+    try:
+        if platform.system() == 'Windows':  # Windows
+            os.startfile(file_path)
+        elif platform.system() == 'Darwin':  # macOS
+            subprocess.call(('open', file_path))
+        else:  # Linux
+            subprocess.call(('xdg-open', file_path))
+    except IOError:
+        print(f"Failed to open {file_path}")
 
 
 def main():
@@ -59,10 +100,10 @@ def main():
         i = start_over()
 
     print('Thanks for using our currency converter')
-    print_results()
+    file_path = print_and_save()
+    open_file(file_path)
 
 
-Result = []
 main()
 
 
