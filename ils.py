@@ -2,12 +2,15 @@ import requests
 
 
 class ILS:
+    # This is the ILS coin.
+    # It has functions that use to convert user input amount from ILS to USD
     base_currency = "ILS"
     convert_to = "USD"
     default_rate = 0.28
 
     def get_value(self):
-        # returns the exchange rate it gets from a REST API. If the API is not available, it returns the default rate
+        # returns the latest exchange rate it gets from a REST API.
+        # If the API is not available, it returns the default rate
         host_url = 'https://api.frankfurter.app/latest'
         url = f'{host_url}?from={self.base_currency}&to={self.convert_to}'
         try:

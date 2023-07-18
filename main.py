@@ -5,10 +5,9 @@ import platform
 import subprocess
 from ils import ILS
 from usd import USD
+from eur import EUR
 from result import Result
-
-results = []
-file_name = 'results.txt'
+from __init__ import results, file_name
 
 
 def get_user_value():
@@ -18,12 +17,15 @@ def get_user_value():
     # repeats until the user's choice is valid
     i = 1
     while i == 1:
-        user_choice = input('Please choose an option (1/2): \n1. Dollars to Shekels \n2. Shekels to Dollars\n')
+        user_choice = input('Please choose an option (1/2/3): \n1. Dollars to Shekels \n2. Shekels to Dollars\n3. Shekels to Euros\n')
         if user_choice == '1':
             coin = USD()
             i = 0
         elif user_choice == '2':
             coin = ILS()
+            i = 0
+        elif user_choice == '3':
+            coin = EUR()
             i = 0
         else:
             print('Invalid Choice, please try again\n')

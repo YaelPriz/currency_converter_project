@@ -1,12 +1,12 @@
 import requests
 
 
-class USD:
-    # This is the USD coin.
-    # It has functions that use to convert user input amount from USD to ILS
-    base_currency = "USD"
-    convert_to = "ILS"
-    default_rate = 3.52
+class EUR:
+    # This is the EUR coin.
+    # It has functions that use to convert user input amount from ILS to EUR
+    base_currency = "ILS"
+    convert_to = "EUR"
+    default_rate = 4.23
 
     def get_value(self):
         # returns the latest exchange rate it gets from a REST API.
@@ -36,3 +36,4 @@ class USD:
                 print('Invalid Value, please try again\n')
         conversion = value_to_convert * self.get_value()
         return conversion
+
